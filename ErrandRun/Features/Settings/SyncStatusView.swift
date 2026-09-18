@@ -13,7 +13,7 @@
 import SwiftUI
 
 struct SyncStatusView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     private var counts: (errands: Int, places: Int, runs: Int) {

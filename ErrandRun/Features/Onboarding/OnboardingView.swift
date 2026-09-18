@@ -13,7 +13,7 @@ struct OnboardingPage: Identifiable {
 }
 
 struct OnboardingView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @State private var page = 0
 
     private let pages: [OnboardingPage] = [

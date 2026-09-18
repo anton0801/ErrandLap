@@ -7,7 +7,7 @@ import SwiftUI
 import PhotosUI
 
 struct PlaceEditorView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var existing: Place?
@@ -159,7 +159,7 @@ struct PlaceEditorView: View {
                         .frame(height: ERMetric.buttonHeight)
                         .overlay { BeveledRect().stroke(ER.charcoal, lineWidth: 3) }
                 }
-                .onChange(of: photoItems) { _, items in
+                .onChange(of: photoItems) { items in
                     guard !items.isEmpty else { return }
                     loadingPhotos = true
                     Task {

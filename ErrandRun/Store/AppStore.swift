@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Observation
 import SwiftUI
 
 struct NextStep: Hashable {
@@ -36,26 +35,25 @@ struct Derived {
     var waitingCount: Int = 0
 }
 
-@Observable
-final class AppStore {
-    var data: AppData {
+final class AppStore: ObservableObject {
+    @Published var data: AppData {
         didSet { scheduleSave() }
     }
 
-    private(set) var derived = Derived()
-    private(set) var isLoading = true
-    private(set) var loadError: String?
+    @Published private(set) var derived = Derived()
+    @Published private(set) var isLoading = true
+    @Published private(set) var loadError: String?
 
-    @ObservationIgnored private var saveWorkItem: DispatchWorkItem?
-    @ObservationIgnored private let fileURL: URL
-    @ObservationIgnored private let photosURL: URL
+    private var saveWorkItem: DispatchWorkItem?
+    private let fileURL: URL
+    private let photosURL: URL
 
     /// False only while server changes are being written in, so they are not
     /// mistaken for local edits and pushed straight back.
-    @ObservationIgnored private var tracksChanges = true
+    private var tracksChanges = true
 
     /// Set by the sync engine; called after any local edit.
-    @ObservationIgnored var onLocalChange: (() -> Void)?
+    var onLocalChange: (() -> Void)?
 
     // MARK: Init
 

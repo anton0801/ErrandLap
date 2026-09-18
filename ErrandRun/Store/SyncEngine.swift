@@ -7,14 +7,12 @@
 //
 
 import Foundation
-import Observation
 #if canImport(UIKit)
 import UIKit
 #endif
 
-@Observable
 @MainActor
-final class SyncEngine {
+final class SyncEngine: ObservableObject {
     enum Status: Equatable {
         case idle
         case syncing
@@ -25,13 +23,13 @@ final class SyncEngine {
         var isBusy: Bool { self == .syncing }
     }
 
-    private(set) var status: Status = .idle
-    private(set) var pendingCount: Int = 0
+    @Published private(set) var status: Status = .idle
+    @Published private(set) var pendingCount: Int = 0
 
-    @ObservationIgnored private let store: AppStore
-    @ObservationIgnored private var runningTask: Task<Void, Never>?
-    @ObservationIgnored private var debounceTask: Task<Void, Never>?
-    @ObservationIgnored private var enabled = false
+    private let store: AppStore
+    private var runningTask: Task<Void, Never>?
+    private var debounceTask: Task<Void, Never>?
+    private var enabled = false
 
     init(store: AppStore) {
         self.store = store

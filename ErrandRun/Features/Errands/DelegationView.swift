@@ -41,7 +41,7 @@ enum DelegationText {
 }
 
 struct DelegationView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var editingID: UUID?

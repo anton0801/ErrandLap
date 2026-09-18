@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthView: View {
-    @Environment(AuthStore.self) private var auth
+    @EnvironmentObject private var auth: AuthStore
 
     enum Mode: String, CaseIterable, Hashable {
         case signIn = "Sign In"
@@ -34,7 +34,7 @@ struct AuthView: View {
                     header
 
                     ERChipRow(items: Mode.allCases, title: { $0.rawValue }, selection: $mode)
-                        .onChange(of: mode) { _, _ in
+                        .onChange(of: mode) { _ in
                             auth.errorMessage = nil
                             auth.fieldErrors = [:]
                         }

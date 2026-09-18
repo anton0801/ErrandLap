@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WastedTripEditor: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var place: Place

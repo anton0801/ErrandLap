@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct EndpointPicker: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Binding var endpoint: Endpoint
     var label: String
 
@@ -63,7 +63,7 @@ struct EndpointPicker: View {
 }
 
 struct WindowsView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var editing: FreeWindow?
@@ -127,16 +127,16 @@ struct WindowsView: View {
             }
         }
         .sheet(isPresented: $creating) {
-            WindowEditorView().environment(store)
+            WindowEditorView().environmentObject(store)
         }
         .sheet(item: $editing) { window in
-            WindowEditorView(existing: window).environment(store)
+            WindowEditorView(existing: window).environmentObject(store)
         }
     }
 }
 
 struct WindowEditorView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var existing: FreeWindow?

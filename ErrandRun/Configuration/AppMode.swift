@@ -5,21 +5,19 @@
 //  ┌──────────────────────────────────────────────────────────────────────────┐
 //  │  ONE SWITCH: does this build talk to the server, or not?                 │
 //  │                                                                          │
-//  │  Right now it is `.localOnly`. Everything lives on the phone: no sign-in │
-//  │  screen, no sync, no network calls at all. The app is complete this way  │
-//  │  — it is what it was before the server existed.                          │
+//  │  Right now it is `.connected`: accounts, sync and the WebView portal are │
+//  │  live against APIConfiguration.baseURL.                                  │
+//  │                                                                          │
+//  │  Switching back to `.localOnly` turns all of that off again — no sign-in │
+//  │  screen, no sync, no network — without removing a line of code.          │
 //  │                                                                          │
 //  │  The whole client–server layer is still here and still compiles:         │
 //  │  APIClient, AuthStore, SyncEngine, the auth and account screens, the     │
 //  │  WebView portal. Nothing was removed, and nothing about it is guessed —  │
 //  │  it has been tested against the live API.                                │
 //  │                                                                          │
-//  │  WHEN THE SERVER IS UP, THE WHOLE CHANGE IS:                             │
-//  │                                                                          │
-//  │      static let current: Mode = .connected                               │
-//  │                                                                          │
-//  │  and, if the address moved, the one line in APIConfiguration.baseURL.    │
-//  │  That is it. See LOCAL-MODE.md next to the project for what flips.       │
+//  │  The switch is this one line. The address it talks to is the one line in │
+//  │  APIConfiguration.baseURL. See LOCAL-MODE.md for what each mode changes. │
 //  └──────────────────────────────────────────────────────────────────────────┘
 //
 
@@ -34,7 +32,7 @@ enum AppMode {
     }
 
     // ⬇︎ THE SWITCH
-    static let current: Mode = .localOnly
+    static let current: Mode = .connected
 
     /// A build can be pointed at the server without touching the source, which is
     /// handy for testing the connected path before shipping it:

@@ -11,7 +11,7 @@ enum TodayRoute: Hashable {
 }
 
 struct TodayView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
 
     var selectTab: (ERTab) -> Void
     var openRunMode: () -> Void
@@ -19,7 +19,13 @@ struct TodayView: View {
     @State private var path: [TodayRoute] = []
     @State private var addingErrand = false
     @State private var addingPlace = false
+    // Settings reaches for these, and a sheet is worth being explicit about
+    // rather than relying on the environment reaching it on its own.
+    @EnvironmentObject private var auth: AuthStore
+    @EnvironmentObject private var sync: SyncEngine
+
     @State private var showSettings = false
+    @State private var showRightNow = false
     @State private var showTravel = false
 
     private var plan: RoutePlan? { store.derived.todayPlan }
@@ -71,10 +77,18 @@ struct TodayView: View {
                 }
             }
         }
-        .sheet(isPresented: $addingErrand) { ErrandEditorView().environment(store) }
-        .sheet(isPresented: $addingPlace) { PlaceEditorView().environment(store) }
-        .sheet(isPresented: $showSettings) { SettingsView().environment(store) }
-        .sheet(isPresented: $showTravel) { TravelTimesView().environment(store) }
+        .sheet(isPresented: $addingErrand) { ErrandEditorView().environmentObject(store) }
+        .sheet(isPresented: $addingPlace) { PlaceEditorView().environmentObject(store) }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+                .environmentObject(store)
+                .environmentObject(auth)
+                .environmentObject(sync)
+        }
+        .sheet(isPresented: $showTravel) { TravelTimesView().environmentObject(store) }
+        .sheet(isPresented: $showRightNow) {
+            RightNowView(openRunMode: openRunMode).environmentObject(store)
+        }
     }
 
     // MARK: Pieces
@@ -88,6 +102,8 @@ struct TodayView: View {
                     .foregroundStyle(ER.charcoal.opacity(0.6))
             }
             Spacer(minLength: 6)
+            // An unplanned gap: "I have twenty minutes, what can I do?"
+            ERIconButton(systemName: "bolt.fill") { showRightNow = true }
             ERIconButton(systemName: "gearshape.fill") { showSettings = true }
         }
     }

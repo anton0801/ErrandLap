@@ -11,7 +11,7 @@ enum PlacesRoute: Hashable {
 }
 
 struct PlacesView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
 
     @State private var path: [PlacesRoute] = []
     @State private var search = ""
@@ -111,11 +111,11 @@ struct PlacesView: View {
         }
         .sheet(isPresented: $creating) {
             PlaceEditorView()
-                .environment(store)
+                .environmentObject(store)
         }
         .sheet(item: $editing) { place in
             PlaceEditorView(existing: place)
-                .environment(store)
+                .environmentObject(store)
         }
     }
 
@@ -132,7 +132,7 @@ struct PlacesView: View {
 // MARK: - Detail
 
 struct PlaceDetailView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var placeID: UUID
@@ -256,18 +256,18 @@ struct PlaceDetailView: View {
         .sheet(isPresented: $editing) {
             if let place {
                 PlaceEditorView(existing: place)
-                    .environment(store)
+                    .environmentObject(store)
             }
         }
         .sheet(isPresented: $loggingWaste) {
             if let place {
                 WastedTripEditor(place: place)
-                    .environment(store)
+                    .environmentObject(store)
             }
         }
         .sheet(isPresented: $showTravel) {
             TravelTimesView(focusPlaceID: placeID)
-                .environment(store)
+                .environmentObject(store)
         }
     }
 

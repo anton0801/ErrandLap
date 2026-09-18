@@ -38,10 +38,10 @@ struct ErrandRow: View {
                         Spacer(minLength: 4)
                         Text("\(errand.duration)")
                             .font(.erHours)
-                            .foregroundStyle(ER.charcoal)
+                            .foregroundColor(ER.charcoal)
                         + Text(" min")
                             .font(.erCaption)
-                            .foregroundStyle(ER.charcoal.opacity(0.6))
+                            .foregroundColor(ER.charcoal.opacity(0.6))
                     }
 
                     if let note {

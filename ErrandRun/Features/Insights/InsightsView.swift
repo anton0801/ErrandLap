@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InsightsView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
 
     private var finishedRuns: [Run] {
         store.data.runs.filter { $0.state == .finished }

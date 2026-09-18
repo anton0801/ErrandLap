@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SetupView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     var isInitial: Bool
     var onClose: (() -> Void)? = nil
 

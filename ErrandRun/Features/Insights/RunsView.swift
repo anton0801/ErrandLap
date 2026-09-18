@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RunsView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
 
     var openRunMode: () -> Void
 
@@ -138,7 +138,7 @@ struct RunsView: View {
 // MARK: - Detail
 
 struct RunDetailView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var runID: UUID

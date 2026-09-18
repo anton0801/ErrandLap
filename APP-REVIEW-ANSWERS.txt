@@ -1,0 +1,39 @@
+1. SCREEN RECORDING
+Recorded on a physical device on the current iOS release, provided with this reply. It starts by launching the app from the Home Screen and shows the full flow: onboarding, setup, adding a place with opening hours, an errand and a free window, the route being built and explained, the live run, and logging the real time.
+On the items listed:
+- Registration / login / account deletion: NOT PRESENT. No accounts, no sign-in.
+- Purchases or subscriptions: NOT PRESENT. The app is free with no paid features.
+- User-generated content: nothing is shared. What the user types stays on their device and is never uploaded or seen by anyone, so there is nothing to report or block.
+- Permission prompts: one only, local notifications, requested when the user turns reminders on in Settings; shown in the recording. The app never requests location, contacts, camera, microphone or App Tracking Transparency.
+
+2. DEVICES AND OS TESTED
+- [iPhone model], iOS [version] (physical device)
+- iOS Simulator: iPhone 16, iPhone 16 Pro, iPad, iOS 18.5
+
+3. FUNCTIONS AND TARGET AUDIENCE
+Errand Run is an offline planner for everyday errands: pharmacy, post office, bank, clinic, shops, paperwork. Audience: adults running household errands; general audience, no age-restricted content.
+A to-do list does not know the post office closes at 14:00 and is 20 minutes away, and a map app does not know the user has only 90 free minutes. The app answers "what can I actually finish today". The user enters errands, the places they happen at (opening hours per weekday, lunch breaks, last entry) and their free windows; it builds a route that fits, counting travel, time inside each place and a parking buffer. What does not fit moves to the next window that works. It never predicts queue length: it uses the user's estimate, records the real duration, then plans with that average.
+
+4. SETUP AND MAIN FEATURES
+NO LOGIN REQUIRED. No accounts, so no demo credentials exist or are needed, and no sample files. Works right after install. About a minute from a fresh install:
+1) Onboarding: "Next" x3, then "Set Up and Start".
+2) Setup: any home address and a travel mode, "Save Setup". Only these two are required.
+3) Places tab > "Add a Place": name, address, opening hours, save.
+4) Errands tab > "Add an Errand": title, that place, duration, save.
+5) Settings (gear, top right of Today) > Windows: add a window with a start and end.
+6) Today tab: the route is built and every stop explained; "Why This Order" explains the ordering, starting the run opens live mode.
+
+5. EXTERNAL SERVICES
+None, other than Apple frameworks on the device:
+- MapKit / CoreLocation geocoding (MKDirections, CLGeocoder), used only to turn a typed address into a coordinate and get travel time between two points. Optional: if unavailable, travel times can be typed by hand and all else works.
+- Local notifications (UNUserNotificationCenter), scheduled on device.
+- System photo picker (PhotosUI), optional, needs no library access.
+NO backend server, NO accounts, NO analytics, NO advertising, NO tracking, NO third-party SDK, NO payment processor, NO subscription, NO AI service, NO external data provider. The app makes no network requests of its own; all data stays in its container on the device, and it contains no CLLocationManager.
+
+6. REGIONAL DIFFERENCES
+None. Identical in every region: no region gating, regional content, pricing or restricted features. English only. Dates and times follow the device format and time zone. Apple map coverage varies by country, but the app does not depend on it.
+
+7. REGULATED INDUSTRY / MATERIAL
+Not applicable. A personal planning tool, not a regulated service; no medical, financial or legal advice, no claims about any business. Places are typed by the user and stored only on their device. All text, icons, graphics and code are original; typography uses the system font. No third-party trademarks, licensed content or external databases.
+
+CONTACT: [support email]

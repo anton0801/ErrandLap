@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RunModeView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var doneSheet: RunStop?
@@ -112,26 +112,26 @@ struct RunModeView: View {
             DoneSheet(stop: stop) { minutes in
                 complete(stop: stop, minutes: minutes)
             }
-            .environment(store)
+            .environmentObject(store)
         }
         .sheet(item: $skipSheet) { stop in
             SkipSheet(stop: stop) { reason, logWaste in
                 skip(stop: stop, reason: reason, logWaste: logWaste)
             }
-            .environment(store)
+            .environmentObject(store)
         }
         .sheet(isPresented: $showRecheck) {
             if let run {
                 RecheckSheet(run: run, extra: extraMinutes) { action in
                     handle(action: action, run: run)
                 }
-                .environment(store)
+                .environmentObject(store)
             }
         }
         .sheet(isPresented: $showShopping) {
             if let stop = currentStop {
                 ShoppingSheet(errandID: stop.errandID)
-                    .environment(store)
+                    .environmentObject(store)
             }
         }
     }
@@ -449,7 +449,7 @@ struct RunStopCard: View {
 // MARK: - Done sheet
 
 struct DoneSheet: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var stop: RunStop
@@ -587,7 +587,7 @@ enum RecheckAction {
 }
 
 struct RecheckSheet: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var run: Run
@@ -707,7 +707,7 @@ struct RecheckSheet: View {
 // MARK: - Shopping sheet
 
 struct ShoppingSheet: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var errandID: UUID

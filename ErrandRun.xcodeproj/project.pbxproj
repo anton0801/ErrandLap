@@ -6,33 +6,116 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8F93DBB5305DB56E003050EE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8F93DBB4305DB56E003050EE /* FirebaseCore */; };
+		8F93DBB7305DB56E003050EE /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8F93DBB6305DB56E003050EE /* FirebaseMessaging */; };
+		8F93DBBA305DB57D003050EE /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 8F93DBB9305DB57D003050EE /* AppsFlyerLib */; };
+		8F93DBBD305DB58F003050EE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8F93DBBC305DB58F003050EE /* Lottie */; };
+		8F93DC40305DD725003050EE /* ExtensionWithNotification.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8F93DC39305DD725003050EE /* ExtensionWithNotification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8F93DC48305DD72F003050EE /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8F93DC47305DD72F003050EE /* FirebaseMessaging */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8F93DC3E305DD725003050EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8FC37400302E07A100609266 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8F93DC38305DD725003050EE;
+			remoteInfo = ExtensionWithNotification;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8F93DC41305DD725003050EE /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8F93DC40305DD725003050EE /* ExtensionWithNotification.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		8F93DC39305DD725003050EE /* ExtensionWithNotification.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ExtensionWithNotification.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC37408302E07A100609266 /* ErrandRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ErrandRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8F93DB3F305DB095003050EE /* Exceptions for "ErrandRun" folder in "ErrandRun" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8FC37407302E07A100609266 /* ErrandRun */;
+		};
+		8F93DC45305DD725003050EE /* Exceptions for "ExtensionWithNotification" folder in "ExtensionWithNotification" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8F93DC38305DD725003050EE /* ExtensionWithNotification */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		8F93DC3A305DD725003050EE /* ExtensionWithNotification */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8F93DC45305DD725003050EE /* Exceptions for "ExtensionWithNotification" folder in "ExtensionWithNotification" target */,
+			);
+			path = ExtensionWithNotification;
+			sourceTree = "<group>";
+		};
 		8FC3740A302E07A100609266 /* ErrandRun */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8F93DB3F305DB095003050EE /* Exceptions for "ErrandRun" folder in "ErrandRun" target */,
+			);
 			path = ErrandRun;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8F93DC36305DD725003050EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F93DC48305DD72F003050EE /* FirebaseMessaging in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FC37405302E07A100609266 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F93DBB7305DB56E003050EE /* FirebaseMessaging in Frameworks */,
+				8F93DBB5305DB56E003050EE /* FirebaseCore in Frameworks */,
+				8F93DBBA305DB57D003050EE /* AppsFlyerLib in Frameworks */,
+				8F93DBBD305DB58F003050EE /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8F93DC46305DD72F003050EE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8FC373FF302E07A100609266 = {
 			isa = PBXGroup;
 			children = (
 				8FC3740A302E07A100609266 /* ErrandRun */,
+				8F93DC3A305DD725003050EE /* ExtensionWithNotification */,
+				8F93DC46305DD72F003050EE /* Frameworks */,
 				8FC37409302E07A100609266 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				8FC37408302E07A100609266 /* ErrandRun.app */,
+				8F93DC39305DD725003050EE /* ExtensionWithNotification.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +132,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8F93DC38305DD725003050EE /* ExtensionWithNotification */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F93DC44305DD725003050EE /* Build configuration list for PBXNativeTarget "ExtensionWithNotification" */;
+			buildPhases = (
+				8F93DC35305DD725003050EE /* Sources */,
+				8F93DC36305DD725003050EE /* Frameworks */,
+				8F93DC37305DD725003050EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8F93DC3A305DD725003050EE /* ExtensionWithNotification */,
+			);
+			name = ExtensionWithNotification;
+			packageProductDependencies = (
+				8F93DC47305DD72F003050EE /* FirebaseMessaging */,
+			);
+			productName = ExtensionWithNotification;
+			productReference = 8F93DC39305DD725003050EE /* ExtensionWithNotification.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		8FC37407302E07A100609266 /* ErrandRun */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8FC37414302E07A200609266 /* Build configuration list for PBXNativeTarget "ErrandRun" */;
@@ -55,16 +162,22 @@
 				8FC37404302E07A100609266 /* Sources */,
 				8FC37405302E07A100609266 /* Frameworks */,
 				8FC37406302E07A100609266 /* Resources */,
+				8F93DC41305DD725003050EE /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8F93DC3F305DD725003050EE /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8FC3740A302E07A100609266 /* ErrandRun */,
 			);
 			name = ErrandRun;
 			packageProductDependencies = (
+				8F93DBB4305DB56E003050EE /* FirebaseCore */,
+				8F93DBB6305DB56E003050EE /* FirebaseMessaging */,
+				8F93DBB9305DB57D003050EE /* AppsFlyerLib */,
+				8F93DBBC305DB58F003050EE /* Lottie */,
 			);
 			productName = ErrandRun;
 			productReference = 8FC37408302E07A100609266 /* ErrandRun.app */;
@@ -80,6 +193,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					8F93DC38305DD725003050EE = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					8FC37407302E07A100609266 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -94,17 +210,30 @@
 			);
 			mainGroup = 8FC373FF302E07A100609266;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8F93DBB3305DB56E003050EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8F93DBB8305DB57D003050EE /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
+				8F93DBBB305DB58F003050EE /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8FC37409302E07A100609266 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8FC37407302E07A100609266 /* ErrandRun */,
+				8F93DC38305DD725003050EE /* ExtensionWithNotification */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8F93DC37305DD725003050EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FC37406302E07A100609266 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +244,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8F93DC35305DD725003050EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FC37404302E07A100609266 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +260,76 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		8F93DC3F305DD725003050EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8F93DC38305DD725003050EE /* ExtensionWithNotification */;
+			targetProxy = 8F93DC3E305DD725003050EE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		8F93DC42305DD725003050EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ExtensionWithNotification/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ExtensionWithNotification;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = freddy.app.errand.run.ExtensionWithNotification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8F93DC43305DD725003050EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ExtensionWithNotification/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ExtensionWithNotification;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = freddy.app.errand.run.ExtensionWithNotification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		8FC37412302E07A200609266 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -246,10 +451,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ErrandRun/ErrandRun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ErrandRun/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Errand Lap";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to capture photos with your camera in application";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Errand Lap uses tracking permission to understand how people interact with the app, measure advertising performance, and improve the overall experience. This information helps us make our promotions more relevant and refine the app based on how it is used.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -258,13 +466,13 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.82.02;
 				PRODUCT_BUNDLE_IDENTIFIER = freddy.app.errand.run;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -285,10 +493,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ErrandRun/ErrandRun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ErrandRun/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Errand Lap";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to capture photos with your camera in application";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Errand Lap uses tracking permission to understand how people interact with the app, measure advertising performance, and improve the overall experience. This information helps us make our promotions more relevant and refine the app based on how it is used.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -297,13 +508,13 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.82.02;
 				PRODUCT_BUNDLE_IDENTIFIER = freddy.app.errand.run;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -320,6 +531,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8F93DC44305DD725003050EE /* Build configuration list for PBXNativeTarget "ExtensionWithNotification" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F93DC42305DD725003050EE /* Debug */,
+				8F93DC43305DD725003050EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8FC37403302E07A100609266 /* Build configuration list for PBXProject "ErrandRun" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -339,6 +559,61 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8F93DBB3305DB56E003050EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.19.2;
+			};
+		};
+		8F93DBB8305DB57D003050EE /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.18.0;
+			};
+		};
+		8F93DBBB305DB58F003050EE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8F93DBB4305DB56E003050EE /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F93DBB3305DB56E003050EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		8F93DBB6305DB56E003050EE /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F93DBB3305DB56E003050EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		8F93DBB9305DB57D003050EE /* AppsFlyerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F93DBB8305DB57D003050EE /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
+			productName = AppsFlyerLib;
+		};
+		8F93DBBC305DB58F003050EE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F93DBBB305DB58F003050EE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		8F93DC47305DD72F003050EE /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F93DBB3305DB56E003050EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8FC37400302E07A100609266 /* Project object */;
 }

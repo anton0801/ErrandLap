@@ -18,9 +18,9 @@ enum SettingsRoute: Hashable {
 }
 
 struct SettingsView: View {
-    @Environment(AppStore.self) private var store
-    @Environment(AuthStore.self) private var auth
-    @Environment(SyncEngine.self) private var sync
+    @EnvironmentObject private var store: AppStore
+    @EnvironmentObject private var auth: AuthStore
+    @EnvironmentObject private var sync: SyncEngine
     @Environment(\.dismiss) private var dismiss
 
     @State private var path: [SettingsRoute] = []
@@ -147,7 +147,7 @@ struct SettingsView: View {
 // MARK: - Notifications
 
 struct NotificationSettingsView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var denied = false
@@ -217,7 +217,7 @@ struct NotificationSettingsView: View {
 // MARK: - Data
 
 struct DataSettingsView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var exportURLs: [URL] = []

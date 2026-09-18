@@ -11,7 +11,7 @@ enum ErrandsRoute: Hashable {
 }
 
 struct ErrandsView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
 
     @State private var path: [ErrandsRoute] = []
     @State private var creating = false
@@ -86,7 +86,7 @@ struct ErrandsView: View {
         }
         .sheet(isPresented: $creating) {
             ErrandEditorView()
-                .environment(store)
+                .environmentObject(store)
         }
     }
 
@@ -145,7 +145,7 @@ struct ErrandsView: View {
 // MARK: - Detail
 
 struct ErrandDetailView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var errandID: UUID
@@ -214,7 +214,7 @@ struct ErrandDetailView: View {
         .sheet(isPresented: $editing) {
             if let errand {
                 ErrandEditorView(existing: errand)
-                    .environment(store)
+                    .environmentObject(store)
             }
         }
         .alert("Drop this errand?", isPresented: $showDropConfirm) {
@@ -412,7 +412,7 @@ struct ErrandDetailView: View {
 // MARK: - Shopping list
 
 struct ShoppingList: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     var errandID: UUID
     var dark: Bool = false
 

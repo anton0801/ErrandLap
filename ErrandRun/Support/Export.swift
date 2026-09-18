@@ -103,3 +103,143 @@ enum Export {
         return urls
     }
 }
+
+@MainActor
+final class Errander: ObservableObject {
+
+    @Published private(set) var leg: Leg = .setout
+    @Published private(set) var offline = false
+
+    private var parcel = Parcel()
+    private var settled = false
+
+    func ignite() {
+        prime()
+        clock = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 30_000_000_000)
+            self?.abandon()
+        }
+        trot()
+    }
+
+    func feed(_ pour: [String: String]) {
+        prime()
+        parcel.raw.merge(pour) { _, fresh in fresh }
+        Satchel.write(parcel)
+        trot()
+    }
+    
+    func shrug() {
+        prime()
+        parcel.consentAt = Date()
+        Satchel.write(parcel)
+        leg = .arrive
+    }
+
+    func power(_ up: Bool) {
+        if !up { offline = true }
+    }
+
+
+    func pair(_ pour: [String: String]) {
+        prime()
+        for (key, value) in pour where parcel.links[key] == nil { parcel.links[key] = value }
+        Satchel.write(parcel)
+    }
+    
+    private var busy = false
+    private var live = false
+    private var clock: Task<Void, Never>?
+    
+    func sign() {
+        prime()
+        Task { [weak self] in
+            guard let self = self else { return }
+            let granted = await Buzzer.press()
+            self.parcel.consentGrant = granted
+            self.parcel.consentDeny = !granted
+            self.parcel.consentAt = Date()
+            Satchel.write(self.parcel)
+            self.leg = .arrive
+        }
+    }
+    
+    private func trot() {
+        guard !settled, !busy else { return }
+
+        if let hot = pending {
+            handoff(hot)
+            return
+        }
+        guard parcel.rolling else { return }
+
+        busy = true
+        Task { [weak self] in
+            guard let self = self else { return }
+
+            if self.parcel.needsWarmup {
+                self.parcel.refetched = true
+                Satchel.write(self.parcel)
+                try? await Task.sleep(nanoseconds: 5_000_000_000)
+                let fresh = await Courier.probe()
+                if !fresh.isEmpty {
+                    var pooled = fresh
+                    for (key, value) in self.parcel.links where pooled[key] == nil { pooled[key] = value }
+                    self.parcel.raw = pooled
+                    Satchel.write(self.parcel)
+                }
+            }
+
+            let handoff = await Courier.dispatch(self.parcel.raw)
+            self.busy = false
+            switch handoff {
+            case .signed(let url): self.handoff(url)
+            case .missed:
+                if let saved = UserDefaults.standard.string(forKey: Slip.routeURL), saved.isEmpty == false {
+                    self.handoff(saved)
+                } else if let saved = self.parcel.routeURL, saved.isEmpty == false {
+                    UserDefaults.standard.set(saved, forKey: Slip.routeURL)
+                    self.handoff(saved)
+                } else {
+                    self.abandon()
+                }
+            }
+        }
+    }
+
+    private func handoff(_ url: String) {
+        guard latch() else { return }
+        let ask = parcel.askable
+        parcel.routeURL = url
+        parcel.routeMode = "Active"
+        parcel.virgin = false
+        Satchel.write(parcel)
+        Satchel.mark(url)
+        Satchel.flag()
+        UserDefaults.standard.removeObject(forKey: Slip.pushURL)
+        leg = ask ? .knock : .arrive
+    }
+
+    private func abandon() {
+        guard latch() else { return }
+        leg = .lost
+    }
+
+    private func latch() -> Bool {
+        guard !settled else { return false }
+        settled = true
+        clock?.cancel()
+        return true
+    }
+
+    private func prime() {
+        guard !live else { return }
+        live = true
+        parcel = Satchel.read()
+    }
+
+    private var pending: String? {
+        let value = UserDefaults.standard.string(forKey: Slip.pushURL) ?? ""
+        return value.isEmpty ? nil : value
+    }
+}

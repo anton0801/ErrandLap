@@ -14,7 +14,7 @@ struct TravelPair: Identifiable, Hashable {
 }
 
 struct TravelTimesView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     /// When set, only pairs touching this place are shown.
@@ -73,7 +73,7 @@ struct TravelTimesView: View {
         .onAppear { mode = store.data.settings.travelMode }
         .sheet(item: $manualPair) { pair in
             ManualTravelSheet(pair: pair, mode: mode)
-                .environment(store)
+                .environmentObject(store)
         }
     }
 
@@ -237,7 +237,7 @@ struct TravelTimesView: View {
 // MARK: - Manual entry
 
 struct ManualTravelSheet: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var pair: TravelPair

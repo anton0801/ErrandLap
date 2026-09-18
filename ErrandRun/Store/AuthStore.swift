@@ -6,30 +6,28 @@
 //
 
 import Foundation
-import Observation
 
-@Observable
 @MainActor
-final class AuthStore {
+final class AuthStore: ObservableObject {
     enum State: Equatable {
         case restoring
         case signedOut
         case signedIn
     }
 
-    private(set) var state: State = .restoring
-    private(set) var userID: String = ""
-    private(set) var email: String = ""
-    private(set) var displayName: String = ""
-    private(set) var memberSince: Date?
+    @Published private(set) var state: State = .restoring
+    @Published private(set) var userID: String = ""
+    @Published private(set) var email: String = ""
+    @Published private(set) var displayName: String = ""
+    @Published private(set) var memberSince: Date?
 
-    var isWorking = false
-    var errorMessage: String?
-    var fieldErrors: [String: String] = [:]
+    @Published var isWorking = false
+    @Published var errorMessage: String?
+    @Published var fieldErrors: [String: String] = [:]
 
-    @ObservationIgnored private let store: AppStore
-    @ObservationIgnored var onSignedIn: ((String) -> Void)?
-    @ObservationIgnored var onSignedOut: (() -> Void)?
+    private let store: AppStore
+    var onSignedIn: ((String) -> Void)?
+    var onSignedOut: (() -> Void)?
 
     init(store: AppStore) {
         self.store = store

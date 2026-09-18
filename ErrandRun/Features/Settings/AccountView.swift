@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct AccountView: View {
-    @Environment(AuthStore.self) private var auth
-    @Environment(SyncEngine.self) private var sync
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var auth: AuthStore
+    @EnvironmentObject private var sync: SyncEngine
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var sessions: [RemoteSession] = []
@@ -53,10 +53,10 @@ struct AccountView: View {
         }
         .task { await loadSessions() }
         .sheet(isPresented: $showPasswordSheet) {
-            PasswordChangeSheet().environment(auth)
+            PasswordChangeSheet().environmentObject(auth)
         }
         .sheet(isPresented: $showDeleteSheet) {
-            DeleteAccountSheet().environment(auth)
+            DeleteAccountSheet().environmentObject(auth)
         }
         .alert("Sign out of this device?", isPresented: $showSignOutConfirm) {
             Button("Cancel", role: .cancel) {}
@@ -239,7 +239,7 @@ struct AccountView: View {
 // MARK: - Password change
 
 struct PasswordChangeSheet: View {
-    @Environment(AuthStore.self) private var auth
+    @EnvironmentObject private var auth: AuthStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var current = ""
@@ -327,7 +327,7 @@ struct PasswordChangeSheet: View {
 // MARK: - Account deletion
 
 struct DeleteAccountSheet: View {
-    @Environment(AuthStore.self) private var auth
+    @EnvironmentObject private var auth: AuthStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var password = ""

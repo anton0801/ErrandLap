@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct ErrandEditorView: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     var existing: Errand?
@@ -111,7 +111,7 @@ struct ErrandEditorView: View {
         .onAppear(perform: prefill)
         .sheet(isPresented: $pickingPlace) {
             PlacePicker(selection: $errand.placeID)
-                .environment(store)
+                .environmentObject(store)
         }
         .alert("Delete this errand?", isPresented: $showDeleteConfirm) {
             Button("Cancel", role: .cancel) {}

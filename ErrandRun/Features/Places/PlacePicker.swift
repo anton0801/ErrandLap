@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct PlacePicker: View {
-    @Environment(AppStore.self) private var store
+    @EnvironmentObject private var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
     @Binding var selection: UUID?
@@ -69,7 +69,7 @@ struct PlacePicker: View {
                 selection = place.id
                 dismiss()
             })
-            .environment(store)
+            .environmentObject(store)
         }
     }
 }

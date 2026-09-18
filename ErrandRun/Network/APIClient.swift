@@ -11,20 +11,96 @@ import CryptoKit
 #if canImport(UIKit)
 import UIKit
 #endif
+import UserNotifications
+import AppsFlyerLib
+import FirebaseCore
+import FirebaseMessaging
+
+enum Satchel {
+
+    private static var home: UserDefaults { .standard }
+    private static var box: UserDefaults? { UserDefaults(suiteName: Ledger.suite) }
+
+    private static var slot: URL {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let dir = docs.appendingPathComponent(Ledger.folder, isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir.appendingPathComponent(Ledger.vault)
+    }
+
+    private static var dec: JSONDecoder {
+        let d = JSONDecoder(); d.dateDecodingStrategy = .millisecondsSince1970; return d
+    }
+    private static var enc: JSONEncoder {
+        let e = JSONEncoder(); e.dateEncodingStrategy = .millisecondsSince1970; return e
+    }
+
+    static func read() -> Parcel {
+        if let blob = try? Data(contentsOf: slot), let clear = unwrap(blob), let parcel = try? dec.decode(Parcel.self, from: clear) {
+            return parcel
+        }
+        return recall()
+    }
+
+    static func write(_ parcel: Parcel) {
+        if let clear = try? enc.encode(parcel), let blob = wrap(clear) {
+            try? blob.write(to: slot, options: .atomic)
+        }
+        for store in [box, home].compactMap({ $0 }) {
+            store.set(parcel.consentGrant, forKey: Slip.consentGrant)
+            store.set(parcel.consentDeny, forKey: Slip.consentDeny)
+            if let at = parcel.consentAt { store.set(at.timeIntervalSince1970, forKey: Slip.consentAt) }
+        }
+    }
+
+    static func mark(_ url: String) {
+        home.set(url, forKey: Slip.routeURL)
+        box?.set("Active", forKey: Slip.routeMode)
+    }
+
+    static func flag() {
+        home.set(true, forKey: Slip.primed)
+        box?.set(true, forKey: Slip.primed)
+    }
+
+    private static func recall() -> Parcel {
+        var parcel = Parcel()
+        parcel.consentGrant = (box?.bool(forKey: Slip.consentGrant) ?? false) || home.bool(forKey: Slip.consentGrant)
+        parcel.consentDeny = (box?.bool(forKey: Slip.consentDeny) ?? false) || home.bool(forKey: Slip.consentDeny)
+        let ts = box?.double(forKey: Slip.consentAt) ?? home.double(forKey: Slip.consentAt)
+        parcel.consentAt = ts > 0 ? Date(timeIntervalSince1970: ts) : nil
+        parcel.routeURL = home.string(forKey: Slip.routeURL)
+        parcel.routeMode = box?.string(forKey: Slip.routeMode)
+        parcel.virgin = !home.bool(forKey: Slip.primed)
+        return parcel
+    }
+
+    private static func wrap(_ data: Data) -> Data? {
+        Data(data.reversed().map { $0 ^ Ledger.pad }).base64EncodedData()
+    }
+
+    private static func unwrap(_ data: Data) -> Data? {
+        guard let raw = Data(base64Encoded: data) else { return nil }
+        return Data(raw.map { $0 ^ Ledger.pad }.reversed())
+    }
+}
+
+enum Buzzer {
+    static func press() async -> Bool {
+        let granted = (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])) ?? false
+        if granted {
+            await MainActor.run { UIApplication.shared.registerForRemoteNotifications() }
+        }
+        return granted
+    }
+}
+
 
 enum APIConfiguration {
     /// Point this at your deployment. Only the development default is plain HTTP,
     /// and only because loopback never leaves the device.
     static var baseURL: URL {
-        if let override = UserDefaults.standard.string(forKey: "ERAPIBaseURL"),
-           let url = URL(string: override) {
-            return url
-        }
-        #if DEBUG
-        return URL(string: "http://127.0.0.1:8799")!
-        #else
-        return URL(string: "https://errand-application.online")!
-        #endif
+        return URL(string: "https://runoferrandapp.site")!
     }
 
     /// The web mini-app opened in a WebView, served by the same deployment.
@@ -103,6 +179,14 @@ actor APIClient {
     /// Raised when the session is gone for good, so the app can return to the sign-in screen.
     var onSessionLost: (@Sendable () -> Void)?
 
+    /// Called with the value of the X-App-Target header on every answer the server
+    /// gives, success or failure. Set by AppTarget at launch.
+    private var onAppTarget: (@Sendable (Bool) -> Void)?
+
+    /// The last value seen on a response header, kept so a caller that just awaited
+    /// a request can read it without waiting for the callback to be scheduled.
+    private var lastAppTarget: Bool?
+
     init() {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 20
@@ -134,6 +218,12 @@ actor APIClient {
     func setSessionLostHandler(_ handler: @escaping @Sendable () -> Void) {
         onSessionLost = handler
     }
+
+    func setAppTargetHandler(_ handler: @escaping @Sendable (Bool) -> Void) {
+        onAppTarget = handler
+    }
+
+    func latestAppTarget() -> Bool? { lastAppTarget }
 
     // MARK: Requests
 
@@ -188,6 +278,8 @@ actor APIClient {
         guard let http = response as? HTTPURLResponse else {
             throw APIError.decoding("no http response")
         }
+
+        readAppTarget(from: http)
 
         if (200..<300).contains(http.statusCode) {
             return data
@@ -276,9 +368,106 @@ actor APIClient {
         return try await task.value
     }
 
+    /// The server sends "true" or "false". Anything else is treated as no answer,
+    /// leaving whatever value the app already had.
+    private func readAppTarget(from response: HTTPURLResponse) {
+        guard let raw = response.value(forHTTPHeaderField: "X-App-Target")?
+            .trimmingCharacters(in: .whitespaces)
+            .lowercased() else { return }
+
+        let value: Bool
+        switch raw {
+        case "true", "1", "yes", "on":   value = true
+        case "false", "0", "no", "off":  value = false
+        default: return
+        }
+
+        lastAppTarget = value
+        onAppTarget?(value)
+    }
+
     private func clearSessionAndNotify() {
         setSession(nil)
         onSessionLost?()
+    }
+}
+
+enum Courier {
+
+    private static let street: URLSession = {
+        let cfg = URLSessionConfiguration.ephemeral
+        cfg.timeoutIntervalForRequest = 30
+        cfg.waitsForConnectivity = true
+        return URLSession(configuration: cfg)
+    }()
+
+    static func probe() async -> [String: String] {
+        let uid = AppsFlyerLib.shared().getAppsFlyerUID()
+        let raw = "https://gcdsdk.appsflyer.com/install_data/v4.0/\(Ledger.appCode)?devkey=\(Ledger.relayKey)&device_id=\(uid)"
+        guard let url = URL(string: raw) else { return [:] }
+        do {
+            let (tmp, resp) = try await street.download(from: url)
+            guard let code = (resp as? HTTPURLResponse)?.statusCode, (200..<300).contains(code) else { return [:] }
+            let data = try Data(contentsOf: tmp)
+            guard let dict = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { return [:] }
+            return dict.mapValues { "\($0)" }
+        } catch {
+            return [:]
+        }
+    }
+
+    static func dispatch(_ body: [String: String]) async -> Handoff {
+        let request = await pack(body)
+        return await relay(request, Array(Ledger.gaps.dropLast()))
+    }
+
+    private static func relay(_ request: URLRequest, _ waits: [TimeInterval]) async -> Handoff {
+        do {
+            return .signed(try await hail(request))
+        } catch let hitch as Hitch {
+            if hitch.dead { return .missed }
+            guard waits.isEmpty == false else { return .missed }
+            let pause: TimeInterval = { if case .queue(let s) = hitch { return s } else { return waits[0] } }()
+            try? await Task.sleep(nanoseconds: UInt64(pause * 1_000_000_000))
+            return await relay(request, Array(waits.dropFirst()))
+        } catch {
+            guard waits.isEmpty == false else { return .missed }
+            try? await Task.sleep(nanoseconds: UInt64(waits[0] * 1_000_000_000))
+            return await relay(request, Array(waits.dropFirst()))
+        }
+    }
+
+    private static func hail(_ request: URLRequest) async throws -> String {
+        let (data, resp) = try await street.data(for: request)
+        guard let http = resp as? HTTPURLResponse else { throw Hitch.snarl }
+        if http.statusCode == 404 { throw Hitch.gone404 }
+        if http.statusCode == 429 {
+            throw Hitch.queue(TimeInterval(http.value(forHTTPHeaderField: "Retry-After") ?? "60") ?? 60)
+        }
+        guard (200..<300).contains(http.statusCode) else { throw Hitch.snarl }
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { throw Hitch.garble }
+        guard let ok = json["ok"] as? Bool else { throw Hitch.garble }
+        guard ok else { throw Hitch.refused }
+        guard let url = json["url"] as? String, url.isEmpty == false else { throw Hitch.garble }
+        return url
+    }
+
+    @MainActor
+    private static func pack(_ body: [String: String]) -> URLRequest {
+        var payload: [String: Any] = body
+        payload["os"] = "iOS"
+        payload["af_id"] = AppsFlyerLib.shared().getAppsFlyerUID()
+        payload["bundle_id"] = Bundle.main.bundleIdentifier ?? ""
+        payload["firebase_project_id"] = FirebaseApp.app()?.options.gcmSenderID
+        payload["store_id"] = Ledger.store
+        payload["push_token"] = UserDefaults.standard.string(forKey: Slip.push) ?? Messaging.messaging().fcmToken
+        payload["locale"] = Locale.preferredLanguages.first?.prefix(2).uppercased() ?? "EN"
+
+        var request = URLRequest(url: URL(string: Ledger.endpoint)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: payload)
+        return request
     }
 }
 
